@@ -28,7 +28,7 @@ const NavbarPage = () => {
   };
 
   return (
-    <header className="w-full bg-[#FBFAF3] dark:bg-[#171412] border-b border-[#E8E2D8] dark:border-[#38302B] transition-colors duration-300">
+    <header className="w-full  dark:bg-[#171412] border-b border-[#E8E2D8] dark:border-[#38302B] transition-colors duration-300">
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between gap-3">
         {/* Mobile Menu Button */}
         <button
@@ -99,7 +99,7 @@ const NavbarPage = () => {
 
           {/* Sign Up */}
           <Link
-            href="/signup"
+            href="/signUp"
             className="px-3 sm:px-6 py-2 sm:py-2.5 rounded-full bg-[#A53A37] text-white text-xs sm:text-sm font-semibold hover:bg-[#872D2B] transition-all duration-300 shadow-sm whitespace-nowrap"
           >
             Sign Up
