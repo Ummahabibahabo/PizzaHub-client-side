@@ -4,6 +4,7 @@ import { Pizza, Sun, Moon } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { IoClose, IoMenuSharp } from "react-icons/io5";
+import NavUserPage from "./NavUserPage";
 
 const NavbarPage = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -98,12 +99,7 @@ const NavbarPage = () => {
           </button>
 
           {/* Sign Up */}
-          <Link
-            href="/signUp"
-            className="px-3 sm:px-6 py-2 sm:py-2.5 rounded-full bg-[#A53A37] text-white text-xs sm:text-sm font-semibold hover:bg-[#872D2B] transition-all duration-300 shadow-sm whitespace-nowrap"
-          >
-            Sign Up
-          </Link>
+          <NavUserPage></NavUserPage>
         </div>
 
         {/* Mobile Navigation */}

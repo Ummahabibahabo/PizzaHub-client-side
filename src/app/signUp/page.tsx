@@ -1,10 +1,12 @@
 "use client";
 
+import { authClient } from "@/lib/auth-client";
 import { Pizza, X, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
+import { toast } from "react-toastify";
 
 const SignupPage = () => {
   const router = useRouter();
@@ -12,13 +14,34 @@ const SignupPage = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   // Signup Form Submit
-  const handleSignUpBtn = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSignUpBtn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
-    const user = Object.fromEntries(formData.entries());
 
-    console.log("signUp page", user);
+    const user = Object.fromEntries(formData.entries()) as {
+      name: string;
+      email: string;
+      image: string;
+      password: string;
+    };
+
+    const { data, error } = await authClient.signUp.email({
+      ...user,
+      callbackURL: "/",
+    });
+
+    if (error) {
+      console.log(error);
+      toast.error(error.message);
+      return;
+    }
+
+    if (data) {
+      console.log(data);
+      toast.success(`${user.name} successfully signed up!`);
+      router.push("/");
+    }
   };
 
   // Close Button

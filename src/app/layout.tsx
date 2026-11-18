@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import NavbarPage from "@/Navbar/page";
+import { ToastContainer } from "react-toastify";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,6 +28,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="bg-[#FBFAF3]">
         <NavbarPage></NavbarPage>
         <main className="max-w-7xl mx-auto px-6">{children}</main>
+        <ToastContainer />
       </body>
     </html>
   );
