@@ -28,7 +28,7 @@ const SignupPage = () => {
 
     const { data, error } = await authClient.signUp.email({
       ...user,
-      callbackURL: "/",
+      callbackURL: "/signIn",
     });
 
     if (error) {
@@ -40,7 +40,7 @@ const SignupPage = () => {
     if (data) {
       console.log(data);
       toast.success(`${user.name} successfully signed up!`);
-      router.push("/");
+      router.push("/signIn");
     }
   };
 
@@ -53,7 +53,13 @@ const SignupPage = () => {
   const handlePassword = () => {
     setShowPassword(!showPassword);
   };
-
+  //   google login
+  const handleGoogleBtn = async () => {
+    const data = await authClient.signIn.social({
+      provider: "google",
+    });
+    console.log("google login", data);
+  };
   return (
     <div className="flex items-center justify-center px-4 py-10">
       {/* Signup Card */}
@@ -176,7 +182,8 @@ const SignupPage = () => {
 
         {/* Google Signup */}
         <button
-          type="button"
+          onClick={handleGoogleBtn}
+          type="submit"
           className="w-full h-11 rounded-lg border border-[#E8E2D8] bg-white hover:bg-[#F8F5EF] text-[#554D46] font-semibold text-sm flex items-center justify-center gap-3 transition-all duration-300"
         >
           <FcGoogle size={21} />
@@ -187,7 +194,7 @@ const SignupPage = () => {
         <p className="text-center text-xs text-[#82766C] mt-5">
           Already have an account?{" "}
           <Link
-            href="/login"
+            href="/signIn"
             className="font-semibold text-[#A53A37] hover:underline"
           >
             Sign in
