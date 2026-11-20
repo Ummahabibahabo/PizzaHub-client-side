@@ -1,3 +1,4 @@
+import { TDashboardbarItem } from "@/app/type.ts";
 import DashboardSidebarPage from "@/component/dashboard/DashboardSidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { auth } from "@/lib/auth";

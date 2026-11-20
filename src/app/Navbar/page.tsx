@@ -6,6 +6,7 @@ import { useState } from "react";
 import { IoClose, IoMenuSharp } from "react-icons/io5";
 import NavUserPage from "./NavUserPage";
 import { FaPizzaSlice } from "react-icons/fa";
+import { authClient } from "@/lib/auth-client";
 
 const NavbarPage = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -28,7 +29,9 @@ const NavbarPage = () => {
       document.documentElement.classList.remove("dark");
     }
   };
-
+  const { data: session } = authClient.useSession();
+  const user = session?.user;
+  console.log(user);
   return (
     <header className="w-full  dark:bg-[#171412] border-b border-[#E8E2D8] dark:border-[#38302B] transition-colors duration-300">
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between gap-3">
@@ -86,12 +89,14 @@ const NavbarPage = () => {
             Browse Menu
           </Link>
 
-          <Link
-            href="/dashboard"
-            className="text-sm font-medium text-[#554D46] dark:text-[#E8DED5] hover:text-[#A53A37] transition"
-          >
-            Dashboard
-          </Link>
+          {user && (
+            <Link
+              href="/dashboard"
+              className="text-sm font-medium text-[#554D46] dark:text-[#E8DED5] hover:text-[#A53A37] transition"
+            >
+              Dashboard
+            </Link>
+          )}
         </nav>
 
         {/* Right Side */}
