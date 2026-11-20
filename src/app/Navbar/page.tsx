@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { IoClose, IoMenuSharp } from "react-icons/io5";
 import NavUserPage from "./NavUserPage";
+import { FaPizzaSlice } from "react-icons/fa";
 
 const NavbarPage = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -45,24 +46,30 @@ const NavbarPage = () => {
         </button>
 
         {/* Logo */}
+
         <Link
           href="/"
           className="flex items-center gap-1.5 sm:gap-2 shrink-0"
           onClick={() => setMenuOpen(false)}
         >
-          <Pizza size={32} strokeWidth={2.2} className="text-[#A53A37]" />
+          <div className="bg-[#A53A37] text-white p-3 rounded-xl">
+            <FaPizzaSlice size={22} />
+          </div>
 
-          <div className="flex flex-col">
-            <span className="text-lg sm:text-2xl font-bold text-[#A53A37] leading-none">
-              Pizza Hub
-            </span>
+          <div>
+            <h2 className="text-xl font-extrabold leading-none text-[#302923]">
+              pizza
+            </h2>
 
-            <span className="text-[8px] sm:text-[11px] tracking-[1px] sm:tracking-[2px] text-[#82766C] dark:text-[#B9ACA0] mt-1">
+            <h2 className="text-xl font-extrabold leading-none text-[#A53A37]">
+              hub
+            </h2>
+
+            <p className="text-[10px] tracking-[2px] text-[#82766C] mt-1">
               LOCAL PIZZA. BIG LOVE.
-            </span>
+            </p>
           </div>
         </Link>
-
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-10">
           <Link

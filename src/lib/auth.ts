@@ -15,6 +15,16 @@ export const auth = betterAuth({
       clientSecret: process.env.GOOGLE_SECRET_ID as string,
     },
   },
+  user: {
+    additionalFields: {
+      role: {
+        type: ["vendor", "customer", "admin"],
+        required: true,
+        defaultValue: "customer",
+        input: false,
+      },
+    },
+  },
   database: mongodbAdapter(db, {
     client,
   }),
