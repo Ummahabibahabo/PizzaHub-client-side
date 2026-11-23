@@ -88,7 +88,7 @@ const SubscriptionPage = () => {
               <span className="text-sm text-gray-400">/ forever</span>
             </div>
 
-            <p className="mb-5 text-xs text-gray-500">
+            <p className="mb-5 text-sm text-gray-500">
               Everything you need to get your pizza business started.
             </p>
 
@@ -102,7 +102,7 @@ const SubscriptionPage = () => {
               {freeFeatures.map((feature, index) => (
                 <li
                   key={index}
-                  className="flex items-start gap-2.5 text-[13px] text-[#665B55]"
+                  className="flex items-start gap-2.5 text-sm text-[#665B55]"
                 >
                   <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#F5E5DE] text-[#A83B3B]">
                     <Check size={12} strokeWidth={3} />
@@ -144,7 +144,7 @@ const SubscriptionPage = () => {
               <span className="text-sm text-[#F2C4B5]">/ month</span>
             </div>
 
-            <p className="mb-5 text-xs leading-5 text-[#F3D7CE]">
+            <p className="mb-5 text-sm leading-5 text-[#F3D7CE]">
               Take your restaurant to the next level with premium features and
               unlimited possibilities.
             </p>
@@ -159,7 +159,7 @@ const SubscriptionPage = () => {
               {premiumFeatures.map((feature, index) => (
                 <li
                   key={index}
-                  className="flex items-start gap-2.5 text-[13px] text-[#F9E7E0]"
+                  className="flex items-start gap-2.5 text-sm text-[#F9E7E0]"
                 >
                   <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-white/15 text-[#FFD7C8]">
                     <Check size={12} strokeWidth={3} />
@@ -174,7 +174,7 @@ const SubscriptionPage = () => {
               <ArrowRight size={16} />
             </button>
 
-            <p className="mt-3 text-center text-[11px] text-[#F2C4B5]">
+            <p className="mt-3 text-center text-sm text-[#F2C4B5]">
               Secure payment powered by Stripe.
             </p>
           </div>
@@ -192,13 +192,13 @@ const SubscriptionPage = () => {
                 Simple and secure subscription
               </h4>
 
-              <p className="mt-1 text-xs text-gray-500">
+              <p className="mt-1 text-sm text-gray-500">
                 Your payment is processed securely through Stripe.
               </p>
             </div>
           </div>
 
-          <div className="text-xs font-medium text-[#A83B3B]">
+          <div className="text-sm font-medium text-[#A83B3B]">
             Made for the neighborhood.
           </div>
         </div>
