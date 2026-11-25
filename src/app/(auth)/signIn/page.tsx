@@ -13,7 +13,20 @@ const SigninPage = () => {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  // Signup Form Submit
+  // Redirect according to user role
+ const handleRoleRedirect = (role?: string) => {
+   if (role === "admin") {
+     router.push("/dashboard/admin");
+   } else if (role === "vendor") {
+     router.push("/dashboard/vendor");
+   } else if (role === "customer") {
+     router.push("/dashboard/customer");
+   } else {
+     router.push("/signIn");
+   }
+ };
+
+  // Credential Login
   const handleSignInBtn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -24,10 +37,9 @@ const SigninPage = () => {
       password: string;
     };
 
-    const { data, error } = await authClient.signIn.email({
+    const { error } = await authClient.signIn.email({
       email: currentUser.email,
       password: currentUser.password,
-      callbackURL: "/",
     });
 
     if (error) {
@@ -36,11 +48,20 @@ const SigninPage = () => {
       return;
     }
 
-    if (data) {
-      console.log(data);
-      toast.success(` successfully signed up!`);
-      router.push("/");
+    // Get logged-in user information
+    const { data: session, error: sessionError } =
+      await authClient.getSession();
+
+    if (sessionError || !session?.user) {
+      toast.error("Unable to get user information");
+      return;
     }
+
+    const role = (session.user as typeof session.user & { role?: string }).role;
+
+    toast.success("Successfully logged in!");
+
+    handleRoleRedirect(role);
   };
 
   // Close Button
@@ -52,16 +73,23 @@ const SigninPage = () => {
   const handlePassword = () => {
     setShowPassword(!showPassword);
   };
-  //   google login
+
+  // Google Login
   const handleGoogleBtn = async () => {
-    const data = await authClient.signIn.social({
+    const { error } = await authClient.signIn.social({
       provider: "google",
+      callbackURL: "/auth/redirect",
     });
-    console.log("google login", data);
+
+    if (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
   };
+
   return (
     <div className="flex items-center justify-center px-4 py-10">
-      {/* Signup Card */}
+      {/* Signin Card */}
       <form
         onSubmit={handleSignInBtn}
         className="relative w-full max-w-md bg-[#FBFAF3] rounded-2xl p-6 sm:p-8 shadow-2xl"
@@ -89,7 +117,7 @@ const SigninPage = () => {
           </h2>
 
           <p className="text-sm text-[#82766C] mt-2">
-            Join PizzaHub and enjoy delicious moments.
+            Welcome back to PizzaHub.
           </p>
         </div>
 
@@ -135,12 +163,12 @@ const SigninPage = () => {
           </div>
         </div>
 
-        {/* Signup Button */}
+        {/* Signin Button */}
         <button
           type="submit"
           className="w-full h-11 rounded-lg bg-[#C83D3D] hover:bg-[#A53A37] text-white font-semibold text-sm transition-all duration-300 shadow-sm"
         >
-          SignIn <span className="ml-2">→</span>
+          Sign In <span className="ml-2">→</span>
         </button>
 
         {/* Divider */}
@@ -150,15 +178,26 @@ const SigninPage = () => {
           <div className="flex-1 h-px bg-[#E8E2D8]"></div>
         </div>
 
-        {/* Google Signup */}
+        {/* Google Login */}
         <button
           onClick={handleGoogleBtn}
-          type="submit"
+          type="button"
           className="w-full h-11 rounded-lg border border-[#E8E2D8] bg-white hover:bg-[#F8F5EF] text-[#554D46] font-semibold text-sm flex items-center justify-center gap-3 transition-all duration-300"
         >
           <FcGoogle size={21} />
           Continue with Google
         </button>
+
+        {/* Signup Link */}
+        <p className="text-center text-xs text-[#82766C] mt-5">
+          Don't have an account?{" "}
+          <Link
+            href="/signUp"
+            className="font-semibold text-[#A53A37] hover:underline"
+          >
+            Sign up
+          </Link>
+        </p>
       </form>
     </div>
   );

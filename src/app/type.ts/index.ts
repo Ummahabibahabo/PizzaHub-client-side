@@ -14,6 +14,7 @@ export type TDashboardbarItem = {
 };
 export type TUser = "vendor" | "customer" | "admin";
 export interface MenuItem {
+  _id: string;
   itemName: string;
   category: string;
   description: string;
@@ -25,4 +26,5 @@ export interface MenuItem {
   vendorEmail?: string;
   vendorTime?: Date;
   vendorImage?: string | null;
+  status: "Pending" | "Approved" | "Rejected";
 }

@@ -24,10 +24,34 @@ const SignupPage = () => {
       email: string;
       image: string;
       password: string;
+      role: "vendor" | "customer";
     };
 
+    // Password validation
+    const password = user.password;
+
+    if (password.length < 6) {
+      toast.error("Password must be at least 6 characters");
+      return;
+    }
+
+    if (!/[A-Z]/.test(password)) {
+      toast.error("Password must contain an uppercase letter");
+      return;
+    }
+
+    if (!/[a-z]/.test(password)) {
+      toast.error("Password must contain a lowercase letter");
+      return;
+    }
+
+    // Email Signup
     const { data, error } = await authClient.signUp.email({
-      ...user,
+      name: user.name,
+      email: user.email,
+      password: user.password,
+      image: user.image || undefined,
+      role: user.role,
       callbackURL: "/signIn",
     });
 
@@ -53,13 +77,20 @@ const SignupPage = () => {
   const handlePassword = () => {
     setShowPassword(!showPassword);
   };
-  //   google login
+
+  // Google Signup
   const handleGoogleBtn = async () => {
-    const data = await authClient.signIn.social({
+    const { error } = await authClient.signIn.social({
       provider: "google",
+      callbackURL: "/",
     });
-    console.log("google login", data);
+
+    if (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
   };
+
   return (
     <div className="flex items-center justify-center px-4 py-10">
       {/* Signup Card */}
@@ -112,7 +143,7 @@ const SignupPage = () => {
         {/* Image URL */}
         <div className="mb-4">
           <label className="block text-sm font-semibold text-[#554D46] mb-2">
-            Image URL
+            Profile Image URL (Optional)
           </label>
 
           <input
@@ -139,7 +170,7 @@ const SignupPage = () => {
         </div>
 
         {/* Password */}
-        <div className="mb-5">
+        <div className="mb-4">
           <label className="block text-sm font-semibold text-[#554D46] mb-2">
             Password
           </label>
@@ -150,10 +181,12 @@ const SignupPage = () => {
               name="password"
               placeholder="Enter your password"
               required
+              minLength={6}
+              pattern="(?=.*[a-z])(?=.*[A-Z]).{6,}"
+              title="Minimum 6 characters, one uppercase and one lowercase letter"
               className="w-full h-11 px-3 pr-11 rounded-lg border border-[#E8E2D8] bg-white text-[#302923] placeholder:text-[#A69D95] outline-none focus:border-[#A53A37] transition"
             />
 
-            {/* Show / Hide Button */}
             <button
               type="button"
               onClick={handlePassword}
@@ -163,6 +196,27 @@ const SignupPage = () => {
               {showPassword ? <Eye size={19} /> : <EyeOff size={19} />}
             </button>
           </div>
+
+          <p className="text-xs text-[#82766C] mt-2">
+            Minimum 6 characters, one uppercase and one lowercase letter.
+          </p>
+        </div>
+
+        {/* Account Role */}
+        <div className="mb-5">
+          <label className="block text-sm font-semibold text-[#554D46] mb-2">
+            Account Role
+          </label>
+
+          <select
+            name="role"
+            defaultValue="customer"
+            required
+            className="w-full h-11 px-3 rounded-lg border border-[#E8E2D8] bg-white text-[#302923] outline-none focus:border-[#A53A37]"
+          >
+            <option value="customer">Customer</option>
+            <option value="vendor">Vendor</option>
+          </select>
         </div>
 
         {/* Signup Button */}
@@ -183,7 +237,7 @@ const SignupPage = () => {
         {/* Google Signup */}
         <button
           onClick={handleGoogleBtn}
-          type="submit"
+          type="button"
           className="w-full h-11 rounded-lg border border-[#E8E2D8] bg-white hover:bg-[#F8F5EF] text-[#554D46] font-semibold text-sm flex items-center justify-center gap-3 transition-all duration-300"
         >
           <FcGoogle size={21} />

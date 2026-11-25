@@ -8,6 +8,7 @@ const db = client.db("pizzaHub_db");
 export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
+    minPasswordLength: 6,
   },
   socialProviders: {
     google: {
@@ -21,7 +22,7 @@ export const auth = betterAuth({
         type: ["vendor", "customer", "admin"],
         required: true,
         defaultValue: "customer",
-        input: false,
+        input: true,
       },
     },
   },
