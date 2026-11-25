@@ -1,5 +1,8 @@
 "use client";
 
+import { MenuItem } from "@/app/type.ts";
+import { addMenu } from "@/lib/actions/addMenu";
+import { uploadImage } from "@/lib/actions/uploadImage";
 import {
   Pizza,
   ImagePlus,
@@ -13,8 +16,13 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
+import { authClient } from "../../../../../lib/auth-client";
+import { redirect } from "next/navigation";
 
 const AddMenuItemPage = () => {
+  const { data: session } = authClient.useSession();
+  const user = session?.user;
+  console.log("addMenuItemPage", user);
   // Selected image preview
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
@@ -31,9 +39,36 @@ const AddMenuItemPage = () => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
-    const addMenuData = Object.fromEntries(formData.entries());
+
+    // Get selected image
+    const imageFile = formData.get("image") as File;
+
+    // Upload image to ImgBB
+    const imageUrl = await uploadImage(imageFile);
+
+    // Create menu data
+    const addMenuData: MenuItem = {
+      itemName: formData.get("itemName") as string,
+      category: formData.get("category") as string,
+      description: formData.get("description") as string,
+      price: formData.get("price") as string,
+      location: formData.get("location") as string,
+      image: imageUrl,
+      vendorId: user?.id,
+      vendorName: user?.name,
+      vendorEmail: user?.email,
+      vendorImage: user?.image,
+      vendorTime: user?.createdAt,
+    };
 
     console.log(addMenuData);
+
+    // Send data to backend
+    const result = await addMenu(addMenuData);
+    if (result) {
+      redirect("/dashboard/vendor/my-menu-items");
+    }
+    console.log(result);
   };
 
   return (

@@ -13,3 +13,16 @@ export type TDashboardbarItem = {
   role: string;
 };
 export type TUser = "vendor" | "customer" | "admin";
+export interface MenuItem {
+  itemName: string;
+  category: string;
+  description: string;
+  price: string;
+  location: string;
+  image: string;
+  vendorId?: string;
+  vendorName?: string;
+  vendorEmail?: string;
+  vendorTime?: Date;
+  vendorImage?: string | null;
+}
