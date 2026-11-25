@@ -118,7 +118,11 @@ const roleSidebarItems = {
 const DashboardSidebarPage = ({ user }: { user: TDashboardbarItem }) => {
   const pathname = usePathname();
 
-  const role = user.role;
+  const { data: session } = authClient.useSession();
+
+  const currentUser = session?.user || user;
+
+  const role = currentUser.role;
 
   const sidebarItems = roleSidebarItems[role as TUser] || [];
 
@@ -155,16 +159,16 @@ const DashboardSidebarPage = ({ user }: { user: TDashboardbarItem }) => {
         {/* User Information */}
         <div className="flex items-center gap-3 border-b border-[#E8E2D8] pb-5">
           <Avatar className="h-11 w-11 border-2 border-[#F1E5DC]">
-            <AvatarImage src={user.image || ""} />
+            <AvatarImage src={currentUser.image || ""} />
 
             <AvatarFallback className="bg-[#F1E5DC] text-[#A53A37] font-bold">
-              {user.name?.charAt(0)?.toUpperCase() || "U"}
+              {currentUser.name?.charAt(0)?.toUpperCase() || "U"}
             </AvatarFallback>
           </Avatar>
 
           <div className="min-w-0 flex-1">
             <h3 className="text-sm font-bold text-[#302923] truncate">
-              {user.name}
+              {currentUser.name}
             </h3>
 
             <p className="text-xs text-[#82766C] truncate capitalize">
