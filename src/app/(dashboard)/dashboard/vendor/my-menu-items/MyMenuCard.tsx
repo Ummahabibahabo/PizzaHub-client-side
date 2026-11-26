@@ -2,6 +2,7 @@ import { MenuItem } from "@/app/type.ts";
 import { Eye, MapPin, Trash2 } from "lucide-react";
 import Link from "next/link";
 import EditMyMenuPage from "./EditMyMenuPage";
+import DeleteMyMenuPage from "./DeleteMyMenuPage";
 
 const MyMenuCardPage = ({ item }: { item: MenuItem }) => {
   return (
@@ -68,13 +69,8 @@ const MyMenuCardPage = ({ item }: { item: MenuItem }) => {
           <EditMyMenuPage item={item}></EditMyMenuPage>
 
           {/* Delete */}
-          <button
-            type="button"
-            className="flex items-center gap-2 rounded-lg border border-[#e8e5e1] dark:border-[#49413b] px-3 py-2.5 text-xs font-semibold text-[#77716b] dark:text-[#c9bdb4] transition hover:border-red-300 hover:bg-red-50 hover:text-red-600 dark:hover:bg-[#492323] dark:hover:text-red-300 md:px-4 md:text-sm"
-          >
-            <Trash2 size={16} />
-            Delete
-          </button>
+
+          <DeleteMyMenuPage item={item}></DeleteMyMenuPage>
         </div>
       </div>
     </div>

@@ -10,6 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { editMenuPage } from "@/lib/actions/edit";
+import { uploadImage } from "@/lib/actions/uploadImage";
 
 import {
   Pizza,
@@ -22,13 +23,27 @@ import {
   Sparkles,
 } from "lucide-react";
 import { redirect } from "next/navigation";
+import { useState } from "react";
+import { toast } from "react-toastify";
 
 const EditMyMenuPage = ({ item }: { item: MenuItem }) => {
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+  // Image select handler
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    if (file) {
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
   const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
+    const imageFile = formData.get("image") as File;
 
+    const imageUrl = await uploadImage(imageFile);
     const updatedData: MenuItem = {
       ...item,
       itemName: formData.get("itemName") as string,
@@ -36,12 +51,14 @@ const EditMyMenuPage = ({ item }: { item: MenuItem }) => {
       description: formData.get("description") as string,
       price: formData.get("price") as string,
       location: formData.get("location") as string,
+      image: imageUrl,
     };
 
     const result = await editMenuPage(updatedData);
 
     console.log("Edit Menu page", result);
     if (result) {
+      toast.success(`${item.itemName} successfully edit`);
       redirect("/dashboard/vendor/my-menu-items");
     }
   };
@@ -227,32 +244,41 @@ const EditMyMenuPage = ({ item }: { item: MenuItem }) => {
               </div>
             </div>
 
-            {/* Image */}
+            {/* Image Upload */}
             <div>
               <label className="mb-2 block text-sm font-semibold text-[#51443E] dark:text-[#e8ded5]">
-                Item Image
+                Item Image <span className="text-[#A83B3B]">*</span>
               </label>
 
-              <label className="flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-[#E8CFC4] dark:border-[#60433b] bg-[#FCFAF5] dark:bg-[#302923] px-5 py-6 text-center transition hover:border-[#A83B3B]">
-                <img
-                  src={item.image}
-                  alt={item.itemName}
-                  className="mb-4 h-40 w-full rounded-xl object-contain"
-                />
+              <label className="flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-[#E8CFC4] dark:border-[#60433b] bg-[#FCFAF5] dark:bg-[#302923] px-5 py-9 text-center transition hover:border-[#A83B3B] hover:bg-[#F9EDE7] dark:hover:bg-[#392b26]">
+                {imagePreview ? (
+                  <img
+                    src={imagePreview}
+                    alt="Selected food preview"
+                    className="mb-4 h-48 w-full rounded-xl object-cover"
+                  />
+                ) : (
+                  <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-[#F5E5DE] dark:bg-[#492c29] text-[#A83B3B]">
+                    <ImagePlus size={25} />
+                  </div>
+                )}
 
-                <div className="flex items-center gap-2 text-sm font-semibold text-[#51443E] dark:text-[#e8ded5]">
-                  <ImagePlus size={18} className="text-[#A83B3B]" />
-                  Choose a new image
-                </div>
+                <p className="text-sm font-semibold text-[#51443E] dark:text-[#e8ded5]">
+                  {imagePreview
+                    ? "Image selected successfully!"
+                    : "Click to upload your food image"}
+                </p>
 
                 <p className="mt-1 text-xs text-gray-400 dark:text-[#91877f]">
-                  PNG, JPG or JPEG
+                  PNG, JPG or JPEG (Max recommended size: 5MB)
                 </p>
 
                 <input
                   type="file"
                   name="image"
                   accept="image/*"
+                  required
+                  onChange={handleImageChange}
                   className="hidden"
                 />
               </label>
