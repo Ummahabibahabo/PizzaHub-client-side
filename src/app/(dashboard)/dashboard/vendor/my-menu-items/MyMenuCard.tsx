@@ -1,6 +1,7 @@
 import { MenuItem } from "@/app/type.ts";
-import { Eye, MapPin, Pencil, Trash2 } from "lucide-react";
+import { Eye, MapPin, Trash2 } from "lucide-react";
 import Link from "next/link";
+import EditMyMenuPage from "./EditMyMenuPage";
 
 const MyMenuCardPage = ({ item }: { item: MenuItem }) => {
   return (
@@ -63,13 +64,8 @@ const MyMenuCardPage = ({ item }: { item: MenuItem }) => {
           </Link>
 
           {/* Edit */}
-          <Link
-            href={`/my-menu-items/edit/${item._id}`}
-            className="flex items-center gap-2 rounded-lg border border-[#e8e5e1] dark:border-[#49413b] px-3 py-2.5 text-xs font-semibold text-[#77716b] dark:text-[#c9bdb4] transition hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 dark:hover:bg-[#1e3550] dark:hover:text-blue-300 md:px-4 md:text-sm"
-          >
-            <Pencil size={16} />
-            Edit
-          </Link>
+
+          <EditMyMenuPage item={item}></EditMyMenuPage>
 
           {/* Delete */}
           <button
